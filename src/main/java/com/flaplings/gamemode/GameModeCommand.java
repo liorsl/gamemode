@@ -84,9 +84,9 @@ import java.util.stream.Stream;
             this.config.reload();
         else {
             if (this.config.reload())
-                sender.sendMessage(config.getPrefix() + ChatColor.GREEN + "Reloaded configuration");
+                sender.sendMessage(config.getPrefix() + ChatColor.GREEN + "Reloaded configuration.");
             else
-                sender.sendMessage(config.getPrefix() + ERROR_COLOR + "Error while reloading");
+                sender.sendMessage(config.getPrefix() + ERROR_COLOR + "Error while reloading configuration.");
         }
 
         return true;
@@ -117,7 +117,7 @@ import java.util.stream.Stream;
         if (commandSender.hasPermission("fgamemode." + gameMode.name().toLowerCase()))
             return true;
 
-        commandSender.sendMessage(config.getPrefix() + ERROR_COLOR + "You don't have access to game mode " + displayForm(gameMode));
+        commandSender.sendMessage(config.getPrefix() + ERROR_COLOR + "Invalid permissions! You are not permitted to use game mode  " + displayForm(gameMode));
         return false;
     }
 
@@ -182,7 +182,7 @@ import java.util.stream.Stream;
         if (commandSender.hasPermission(permission))
             return true;
 
-        commandSender.sendMessage(config.getPrefix() + ERROR_COLOR + "You don't have permission to do that!");
+        commandSender.sendMessage(config.getPrefix() + ERROR_COLOR + "Invalid permissions!");
         return false;
     }
 }
