@@ -1,3 +1,19 @@
+/*
+MIT License
+
+Copyright (c) 2020 Flaplings
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+*/
 package com.flaplings.gamemode;
 
 import org.bukkit.Bukkit;
@@ -109,9 +125,20 @@ import java.util.stream.Stream;
         if (!hasPermission(sender))
             return Collections.emptyList();
 
-        return args.length <= 1 ?
-                /* handle first arg */ (this.gameMode == null ? completeGameModes(sender, args, 0) : completePlayers(sender, args, 0)) :
-                /* handle 2nd arg */ (this.gameMode == null ? completePlayers(sender, args, 1) : Collections.emptyList());
+        List<String> list = new ArrayList<>();
+        if (args.length == 1 && sender.hasPermission("fgamemode.reload"))
+            list.add("reload");
+
+        if (args.length == 0 || args.length == 1) { // handle first arg
+            list.addAll(
+                    this.gameMode == null ?
+                            completeGameModes(sender, args, 0) :
+                            completePlayers(sender, args, 0)
+            );
+        } else if (this.gameMode == null) // handle 2nd arg
+            list.addAll(completePlayers(sender, args, 1));
+
+        return list;
     }
 
     private boolean hasPermission(CommandSender commandSender) {
