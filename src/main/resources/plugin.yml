@@ -1,7 +1,9 @@
 name: fGameMode
 version: ${project.version}
 main: com.flaplings.gamemode.GameModePlugin
-authors: [ Voigon ]
+authors:
+  - Voigon
+  - Daniel Naaman
 api-version: 1.13
 commands:
   gamemode:
