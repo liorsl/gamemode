@@ -6,9 +6,7 @@ import org.bukkit.GameMode;
 import org.bukkit.command.*;
 import org.bukkit.entity.Player;
 
-import java.util.List;
-import java.util.Optional;
-import java.util.OptionalInt;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -34,6 +32,9 @@ import java.util.stream.Stream;
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
+        if (!checkPermission(sender, "fgamemode"))
+            return false;
+
         GameMode gameMode;
         Player target;
 
@@ -52,6 +53,9 @@ import java.util.stream.Stream;
             sender.sendMessage(config.getPrefix() + ERROR_COLOR + "Invalid usage! Please make sure to specify the correct target player.");
             return false;
         }
+
+        if (target != sender && !checkPermission(sender, "fgamemode.others"))
+            return false;
 
         if (gameMode == null) {
             sender.sendMessage(config.getPrefix() + ERROR_COLOR + "Invalid usage! Game mode not specified or invalid.");
@@ -90,9 +94,9 @@ import java.util.stream.Stream;
             this.config.reload();
         else {
             if (this.config.reload())
-                sender.sendMessage(config.getPrefix() + ChatColor.GREEN + "Reloaded configuration.");
+                sender.sendMessage(config.getPrefix() + ChatColor.GREEN + "Reloaded configuration");
             else
-                sender.sendMessage(config.getPrefix() + ERROR_COLOR + "Error while reloading configuration.");
+                sender.sendMessage(config.getPrefix() + ERROR_COLOR + "Error while reloading configuration");
         }
 
         return true;
@@ -100,33 +104,32 @@ import java.util.stream.Stream;
 
     @Override
     public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
-        String arg = args[0].toLowerCase();
-        List<String> list = Bukkit.getOnlinePlayers()
+        return args.length <= 1 ?
+                /* handle first arg */ (this.gameMode == null ? completeGameModes(sender, args, 0) : completePlayers(sender, args, 0)) :
+                /* handle 2nd arg */ (this.gameMode == null ? completePlayers(sender, args, 1) : Collections.emptyList());
+    }
+
+    private List<String> completePlayers(CommandSender sender, String[] args, int index) {
+        String arg = getFromArray(args, index);
+
+        return Bukkit.getOnlinePlayers()
                 .stream()
                 .filter(player -> player == sender)
                 .map(Player::getName)
-                .filter(string -> string.startsWith(arg))
+                .filter(string -> arg == null || string.startsWith(arg))
                 .collect(Collectors.toList());
-
-        if (this.gameMode == null)
-            list.addAll(Stream.of(GameMode.values())
-                    .map(GameMode::name)
-                    .filter(string -> string.startsWith(arg))
-                    .map(String::toLowerCase)
-                    .collect(Collectors.toList())
-            );
-
-        return list;
     }
 
-    private boolean checkGameModePermission(CommandSender commandSender, GameMode gameMode) {
-        if (commandSender.hasPermission("fgamemode." + gameMode.name().toLowerCase()))
-            return true;
+    private List<String> completeGameModes(CommandSender sender, String[] args, int index) {
+        String arg = getFromArray(args, index);
 
-        commandSender.sendMessage(config.getPrefix() + ERROR_COLOR + "Invalid permissions! You are not permitted to use game mode  " + displayForm(gameMode));
-        return false;
+        return Stream.of(GameMode.values())
+                .map(GameMode::name)
+                .filter(string -> arg == null || string.startsWith(arg))
+                .map(String::toLowerCase)
+                .filter(gameMode -> sender.hasPermission("fgamemode." + gameMode))
+                .collect(Collectors.toList());
     }
-
 
     private <T> T getFromArray(T[] array, int index) {
         try {
@@ -184,11 +187,15 @@ import java.util.stream.Stream;
         }
     }
 
+    private boolean checkGameModePermission(CommandSender commandSender, GameMode gameMode) {
+        return checkPermission(commandSender, "fgamemode." + gameMode.name().toLowerCase());
+    }
+
     private boolean checkPermission(CommandSender commandSender, String permission) {
         if (commandSender.hasPermission(permission))
             return true;
 
-        commandSender.sendMessage(config.getPrefix() + ERROR_COLOR + "Invalid permissions!");
+        commandSender.sendMessage(config.getPrefix() + ERROR_COLOR + "Your are lacking the " + ARGUMENT_COLOR +  permission + ERROR_COLOR + " permission node");
         return false;
     }
 }
