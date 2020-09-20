@@ -2,3 +2,17 @@ name: fGameMode
 version: ${project.version}
 main: com.flaplings.gamemode.GamemodePlugin
 authors: [ Voigon ]
+api-version: 1.13.2
+commands:
+  gamemode:
+    permission: flaplings.gamemode
+    aliases:
+      - gm
+  gmc:
+    permission: flaplings.gamemode
+  gms:
+    permission: flaplings.gamemode
+  gma:
+    permission: flaplings.gamemode
+  gmsp:
+    permission: flaplings.gamemode
