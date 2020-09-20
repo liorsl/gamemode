@@ -1,5 +1,6 @@
 package com.flaplings.gamemode;
 
+import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.FileConfiguration;
 
 import java.io.File;
@@ -59,7 +60,7 @@ import java.io.IOException;
     private boolean load() {
         try {
             this.broadcastToPermissibles = this.fileConfiguration.getBoolean("broadcastToPermissibles");
-            this.prefix = this.fileConfiguration.getString("prefix");
+            this.prefix = translateColors(this.fileConfiguration.getString("prefix"));
             this.useMinecraftNames = this.fileConfiguration.getBoolean("useMinecraftNames");
 
             return true;
@@ -71,9 +72,12 @@ import java.io.IOException;
         }
     }
 
+    private String translateColors(String message) {
+        return ChatColor.translateAlternateColorCodes('&', message);
+    }
     private void addDefaults() {
         this.fileConfiguration.addDefault("broadcastToPermissibles", true);
-        this.fileConfiguration.addDefault("prefix", "gAmEmOdE");
+        this.fileConfiguration.addDefault("prefix", "&7[&bfGameMode&7] ");
         this.fileConfiguration.addDefault("useMinecraftNames", false);
         this.fileConfiguration.options().copyDefaults(true);
         this.fileConfiguration.options().copyHeader(true);
