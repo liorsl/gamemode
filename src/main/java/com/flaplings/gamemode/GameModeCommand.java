@@ -50,7 +50,7 @@ import java.util.stream.Stream;
         }
 
         if (target == null) {
-            sender.sendMessage(config.getPrefix() + ERROR_COLOR + "Invalid usage! Please make sure to specify the correct target player.");
+            sender.sendMessage(config.getPrefix() + ERROR_COLOR + "Invalid target player");
             return false;
         }
 
@@ -58,7 +58,7 @@ import java.util.stream.Stream;
             return false;
 
         if (gameMode == null) {
-            sender.sendMessage(config.getPrefix() + ERROR_COLOR + "Invalid usage! Game mode not specified or invalid.");
+            sender.sendMessage(config.getPrefix() + ERROR_COLOR + "Game mode not specified or is invalid");
             return false;
         }
 
@@ -94,7 +94,7 @@ import java.util.stream.Stream;
             this.config.reload();
         else {
             if (this.config.reload())
-                sender.sendMessage(config.getPrefix() + ChatColor.GREEN + "Reloaded configuration");
+                sender.sendMessage(config.getPrefix() + ChatColor.GREEN + "Successfully reloaded configuration");
             else
                 sender.sendMessage(config.getPrefix() + ERROR_COLOR + "Error while reloading configuration");
         }
@@ -195,7 +195,7 @@ import java.util.stream.Stream;
         if (commandSender.hasPermission(permission))
             return true;
 
-        commandSender.sendMessage(config.getPrefix() + ERROR_COLOR + "Your are lacking the " + ARGUMENT_COLOR +  permission + ERROR_COLOR + " permission node");
+        commandSender.sendMessage(config.getPrefix() + ERROR_COLOR + "You are lacking the " + ARGUMENT_COLOR +  permission + ERROR_COLOR + " permission node");
         return false;
     }
 }
