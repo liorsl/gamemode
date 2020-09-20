@@ -1,0 +1,4 @@
+name: fGameMode
+version: ${project.version}
+main: com.flaplings.gamemode.GamemodePlugin
+authors: [ Voigon ]
