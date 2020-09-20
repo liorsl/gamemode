@@ -50,15 +50,15 @@ import java.io.IOException;
 
     }
 
-    String getPrefix() {
+    /* package-private */ String getPrefix() {
         return this.prefix;
     }
 
-    boolean useMinecraftNames() {
+    /* package-private */ boolean useMinecraftNames() {
         return this.useMinecraftNames;
     }
 
-    boolean broadcastToPermissibles() {
+    /* package-private */ boolean broadcastToPermissibles() {
         return this.broadcastToPermissibles;
     }
 
