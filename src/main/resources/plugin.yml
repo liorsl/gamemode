@@ -5,21 +5,36 @@ authors: [ Voigon ]
 api-version: 1.13
 commands:
   gamemode:
-    permission: fgamemode
     aliases:
       - gm
+    description: Set gamemode
   gmc:
-    permission: fgamemode.creative
+    description: Set  gamemode to creative
   gms:
-    permission: fgamemode.survival
+    description: Set gamemode to survival
   gma:
-    permission: fgamemode.adventure
+    description: Set gamemode to adventure
   gmsp:
-    permission: fgamemode.spectator
+    description: Set gamemode to spectator
 permissions:
   fgamemode.reload:
-    default: false
+    default: op
     description: Reload the configuration
   fgamemode.announce:
     default: op
     description: Announce gammemode change to, if enabled in config
+  fgamemode.others:
+    default: op
+    description: Set other player's gamemode
+  fgamemode.creative:
+    default: op
+    description: Set gamemode to creative
+  fgamemode.survival:
+    default: op
+    description: Set gamemode to survival
+  fgamemode.adventure:
+    default: op
+    description: Set gamemode to adventure
+  fgamemode.spectator:
+    default: op
+    description: Set gamemode to spectator
