@@ -33,8 +33,6 @@ public final class GameModePlugin extends JavaPlugin {
         command.setExecutor(gameModeCommand);
         command.setTabCompleter(gameModeCommand);
 
-        getLogger().info("Registered command: /" + alias);
-
     }
 
     @Override
