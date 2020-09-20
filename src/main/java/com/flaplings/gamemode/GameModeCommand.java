@@ -32,8 +32,10 @@ import java.util.stream.Stream;
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        if (!checkPermission(sender, "fgamemode"))
+        if (!hasPermission(sender)) {
+            sender.sendMessage(config.getPrefix() + ERROR_COLOR + "Insufficient permissions");
             return false;
+        }
 
         GameMode gameMode;
         Player target;
@@ -87,7 +89,7 @@ import java.util.stream.Stream;
     }
 
     private boolean aliasReload(CommandSender sender, Command command, String label, String[] args) {
-        if (!checkPermission(sender, "fgamemode"))
+        if (!checkPermission(sender, "fgamemode.reload"))
             return false;
 
         if (sender instanceof ConsoleCommandSender) // no need to notify in game
@@ -104,9 +106,18 @@ import java.util.stream.Stream;
 
     @Override
     public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
+        if (!hasPermission(sender))
+            return Collections.emptyList();
+
         return args.length <= 1 ?
                 /* handle first arg */ (this.gameMode == null ? completeGameModes(sender, args, 0) : completePlayers(sender, args, 0)) :
                 /* handle 2nd arg */ (this.gameMode == null ? completePlayers(sender, args, 1) : Collections.emptyList());
+    }
+
+    private boolean hasPermission(CommandSender commandSender) {
+        return plugin.getDescription().getPermissions().stream()
+                .filter(permission -> permission.getName().equalsIgnoreCase("fgamemode.reload")) // for whatever reason
+                .anyMatch(commandSender::hasPermission);
     }
 
     private List<String> completePlayers(CommandSender sender, String[] args, int index) {
