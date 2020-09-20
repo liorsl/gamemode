@@ -1,18 +1,25 @@
 name: fGameMode
 version: ${project.version}
-main: com.flaplings.gamemode.GamemodePlugin
+main: com.flaplings.gamemode.GameModePlugin
 authors: [ Voigon ]
-api-version: 1.13.2
+api-version: 1.13
 commands:
   gamemode:
-    permission: flaplings.gamemode
+    permission: fgamemode
     aliases:
       - gm
   gmc:
-    permission: flaplings.gamemode
+    permission: fgamemode.creative
   gms:
-    permission: flaplings.gamemode
+    permission: fgamemode.survival
   gma:
-    permission: flaplings.gamemode
+    permission: fgamemode.adventure
   gmsp:
-    permission: flaplings.gamemode
+    permission: fgamemode.spectator
+permissions:
+  fgamemode.reload:
+    default: false
+    description: Reload the configuration
+  fgamemode.announce:
+    default: op
+    description: Announce gammemode change to, if enabled in config
