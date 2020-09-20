@@ -75,6 +75,7 @@ import java.io.IOException;
     private String translateColors(String message) {
         return ChatColor.translateAlternateColorCodes('&', message);
     }
+
     private void addDefaults() {
         this.fileConfiguration.addDefault("broadcastToPermissibles", true);
         this.fileConfiguration.addDefault("prefix", "&7[&bfGameMode&7] ");
