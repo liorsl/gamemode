@@ -67,11 +67,17 @@ import java.util.stream.Stream;
         if (sender != target)
             target.sendMessage(config.getPrefix() + displayForm(sender) + BODY_COLOR + " changed your game mode to " + displayForm(gameMode));
 
-        if (config.broadcastToPermissibles())
-            Bukkit.broadcast(
-                    config.getPrefix() + displayForm(sender) + BODY_COLOR + " set " + displayForm(target) + BODY_COLOR + " game mode to " + displayForm(gameMode),
-                    "fgamemode.announce"
-            );
+        if (config.broadcastToPermissibles()) {
+            String message =
+                    config.getPrefix() + displayForm(sender) + BODY_COLOR + " set " + displayForm(target) + BODY_COLOR + " game mode to " + displayForm(gameMode);
+
+            Bukkit.getOnlinePlayers().stream()
+                    .filter(player -> player.hasPermission("fgamemode.announce"))
+                    .filter(player -> player != sender)
+                    .filter(player -> player != target)
+                    .forEach(player -> player.sendMessage(message));
+
+        }
 
         return true;
     }
@@ -142,7 +148,7 @@ import java.util.stream.Stream;
     }
 
     private String displayForm(CommandSender sender, Player target) {
-        return ARGUMENT_COLOR + (sender == target ? "Your" : displayForm(target)) + ChatColor.RESET;
+        return ARGUMENT_COLOR + (sender == target ? "your" : displayForm(target)) + ChatColor.RESET;
     }
 
     private String displayForm(Player target) {
